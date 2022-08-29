@@ -5,7 +5,7 @@ from enum import Enum
 import sys
 sys.path.append('../')
 sys.path.append('../../')
-from reward_machines.sparse_reward_machine import SparseRewardMachine
+from rm_cooperative_marl.src.reward_machines.sparse_reward_machine import SparseRewardMachine
 
 """
 Enum with the actions that the agent can execute
@@ -109,6 +109,7 @@ class GridWorldEnv:
 
     def get_mdp_label(self, s, s_next, u):
         """
+        Has 3 stages for start, rendezvous and goal.
         """
         row, col = self.get_state_description(s)
         row_next, col_next = self.get_state_description(s_next)

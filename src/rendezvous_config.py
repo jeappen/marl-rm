@@ -1,6 +1,6 @@
-from tester.tester import Tester
-from tester.tester_params import TestingParameters
-from tester.learning_params import LearningParameters
+from rm_cooperative_marl.src.tester.tester import Tester
+from rm_cooperative_marl.src.tester.tester_params import TestingParameters
+from rm_cooperative_marl.src.tester.learning_params import LearningParameters
 import os
 
 def rendezvous_config(num_times, num_agents):
@@ -12,10 +12,12 @@ def rendezvous_config(num_times, num_agents):
     Tester : tester object
         Object containing the information necessary to run this experiment.
     """
-    base_file_path = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+    base_file_path = os.path.join(os.path.abspath(os.path.dirname(__file__)),os.pardir)
+    
 
     joint_rm_file = os.path.join(base_file_path, 'experiments', 'gridworld_many_agent_rendezvous', '{}_agent_rendezvous_rm.txt'.format(num_agents))
 
+    print("\n\nBFP {}\n JRM {}".format(base_file_path, joint_rm_file))
     local_rm_files = []
     for i in range(num_agents):
         local_rm_string = os.path.join(base_file_path, 'experiments', 'gridworld_many_agent_rendezvous', 'coordination_experiment_agent{}.txt'.format(i+1))
@@ -55,8 +57,13 @@ def rendezvous_config(num_times, num_agents):
     env_settings['Nr'] = 10
     env_settings['Nc'] = 10
     env_settings['initial_states'] = [0, 3, 20, 8, 90, 40, 70, 49, 96, 69]
-    env_settings['rendezvous_loc'] = (3,4)
-    env_settings['goal_locations'] = [(9,7), (7,9), (2,9), (9,9), (0,9), (7,0), (4,0), (5,0), (6,9), (8,0)]
+    # Changed to match \phi_1 in the distSPECTRL paper and the scaling experiments.
+    env_settings['rendezvous_loc'] = (5,0)
+    env_settings['rendezvous_loc2'] = (0,0)
+    env_settings['rendezvous_loc3'] = (3,0)
+    env_settings['goal_locations'] = [env_settings['rendezvous_loc2']]*10
+    env_settings['goal_locations2'] = [env_settings['rendezvous_loc3']]*10
+    # env_settings['goal_locations'] = [(0,0), (0,0), (0,0), (9,9), (0,9), (7,0), (4,0), (5,0), (6,9), (8,0)]
     env_settings['p'] = 0.98
 
     tester.env_settings = env_settings
